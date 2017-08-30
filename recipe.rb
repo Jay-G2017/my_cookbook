@@ -5,4 +5,3 @@ class Recipe
     @name = name
   end
 end
-
