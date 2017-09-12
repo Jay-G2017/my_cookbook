@@ -1,6 +1,5 @@
-require 'json'
 class Recipe
-  attr_accessor :name, :description
+  attr_accessor :name
   def initialize(name)
     @name = name
   end

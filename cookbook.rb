@@ -2,8 +2,8 @@ require 'json'
 class Cookbook
   def initialize(file_path)
     @file_path = file_path
-    serialized_recipes = File.read(@file_path)
-    @recipes = JSON.parse(serialized_recipes)
+    @recipes = []
+    load
   end
 
   def find(index)
@@ -20,17 +20,35 @@ class Cookbook
 
   def create(name)
     new_recipe = Recipe.new(name)
-    hash = {}
-    new_recipe.instance_variables.each do |v|
-      v = v.to_s[1..-1]
-      hash[v] = new_recipe.send v
+    @recipes << new_recipe
+    save!
+  end
+
+  private
+
+  def load
+    serialized_recipes = File.read(@file_path)
+    json_parse_recipes = JSON.parse(serialized_recipes)
+    if json_parse_recipes["recipe"].nil?
+      @recipes
+    else
+    json_parse_recipes["recipes"].each do |recipe|
+      @recipes << Recipe.new(recipe["name"])
     end
-    @recipes << hash
+    end
   end
 
   def save!
+    json_recipes = {}
+    array = []
+    @recipes.each do |r|
+      hash = {}
+      hash[:name] = r.name
+      array << hash
+    end
+    json_recipes["recipes"] = array
     File.open(@file_path, 'wb') do |file|
-      file.write(JSON.generate(@recipes))
+      file.write(JSON.generate(json_recipes))
     end
   end
 end

@@ -18,12 +18,10 @@ class CookbookController
   def create
     recipe_name = @cookbook_view.fetch_recipe_name
     @cookbook.create(recipe_name)
-    @cookbook.save!
   end
   def delete
     i = @cookbook_view.fetch_recipe_index
     @cookbook.delete(i)
-    @cookbook.save!
   end
 end
 
