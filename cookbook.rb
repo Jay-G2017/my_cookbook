@@ -1,4 +1,5 @@
 require 'json'
+require 'byebug'
 class Cookbook
   def initialize(file_path)
     @file_path = file_path
@@ -29,7 +30,7 @@ class Cookbook
   def load
     serialized_recipes = File.read(@file_path)
     json_parse_recipes = JSON.parse(serialized_recipes)
-    if json_parse_recipes["recipe"].nil?
+    if json_parse_recipes["recipes"].nil?
       @recipes
     else
     json_parse_recipes["recipes"].each do |recipe|
