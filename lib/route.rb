@@ -33,7 +33,8 @@ class Route
       puts ""
       puts "press [1] to create a new recipe"
       puts "press [2] to delete a recipe"
-      puts "press [3] to exit!"
+      puts "press [3] to import recipes from 下厨房"
+      puts "press [4] to exit!"
       print ">"
   end
 
@@ -48,6 +49,8 @@ class Route
         puts ""
         @cookbook_controller.delete
       when 3
+        puts "this function is building"
+      when 4
         @running = false
       else
         puts "try again....."
