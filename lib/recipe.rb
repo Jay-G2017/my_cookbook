@@ -1,5 +1,6 @@
 class Recipe
-  attr_accessor :name
+  attr_accessor :name, :process, :tip 
+  attr_reader :rate
   def initialize(name)
     @name = name
   end
