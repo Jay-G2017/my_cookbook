@@ -17,6 +17,7 @@ class Cookbook
 
   def delete(index)
     @recipes.delete_at(index)
+    save!
   end
 
   def create(name)

@@ -1,3 +1,4 @@
+require 'pry'
 require_relative 'route.rb'
 require_relative 'cookbook_controller.rb'
 file_path = File.join(__dir__, 'recipes.json')

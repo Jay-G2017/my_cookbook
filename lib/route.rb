@@ -6,6 +6,7 @@ class Route
 
   def run
     welcome_message
+    # binding.pry
     while @running
       show_recipes_and_todo_list
       action = gets.chomp.to_i
@@ -27,7 +28,7 @@ class Route
   end
 
   def show_recipes_and_todo_list
-      print `clear` if @running
+      # print `clear` if @running
       puts "Here's the recipes you have:"
       @cookbook_controller.index
       puts ""
@@ -43,13 +44,17 @@ class Route
       when 1
         print `clear`
         @cookbook_controller.create
+        print `clear`
       when 2
         print `clear`
         @cookbook_controller.index
         puts ""
         @cookbook_controller.delete
+        print `clear`
       when 3
-        puts "this function is building"
+        print `clear`
+        @cookbook_controller.import_xiachufang
+        print `clear`
       when 4
         @running = false
       else
