@@ -1,8 +1,28 @@
 class CookbookView
   def show_recipes(recipes)
-    recipes.each_with_index do |recipe, index|
-      puts "#{index + 1}. [#{recipe.rate ? recipe.rate : "未评"}分] #{recipe.name}"  
+    if recipes.empty?
+      puts "there is nothing here!"
+    else
+      recipes.each_with_index do |recipe, index|
+        puts "#{index + 1}. [#{recipe.rate ? recipe.rate : "未评"}分] #{recipe.name}"
+      end
     end
+  end
+
+  def show_recipe(recipe)
+    print `clear`
+    puts "Name: #{recipe.name}"
+    puts "ingredients:"
+    puts "#{recipe.ingredients}"
+    puts "Process:"
+    puts "#{recipe.process}"
+    puts "Tips:"
+    puts "#{recipe.tips}"
+  end
+
+  def steps_for_show
+    puts "press [1] to see other recipe"
+    puts "press [other keys] to go back"
   end
 
   def show_results(results)
@@ -21,10 +41,10 @@ class CookbookView
     end
     recipe_info
   end
-  def fetch_recipe_index
+  def fetch_index
     print ">"
-    puts "enter the index of recipe!"
-    i = gets.chomp.to_i - 1
+    puts "enter the index!"
+    i = gets.chomp.to_i
   end
   def fetch_search_key
     print ">"

@@ -11,28 +11,34 @@ class CookbookController
   end
   def index
     recipes = @cookbook.all
-    if recipes.empty?
-      puts "there is nothing here!"
-    else
-      @cookbook_view.show_recipes(recipes)
-    end
+    @cookbook_view.show_recipes(recipes)
   end
+  def show
+    index
+    i = @cookbook_view.fetch_index
+    recipe = @cookbook.find(i - 1)
+    @cookbook_view.show_recipe(recipe)
+    @cookbook_view.steps_for_show
+    i = @cookbook_view.fetch_index
+    show if i == 1
+  end
+
   def create
     recipe_info = @cookbook_view.fetch_recipe_info
     @cookbook.create(recipe_info)
   end
   def delete
-    i = @cookbook_view.fetch_recipe_index
-    @cookbook.delete(i)
+    i = @cookbook_view.fetch_index
+    @cookbook.delete(i - 1)
   end
   def import_xiachufang
     search_key = @cookbook_view.fetch_search_key
     url = "https://www.xiachufang.com/search/?keyword=#{search_key}&cat=1001"
-    url=URI.escape(url) 
+    url=URI.escape(url)
     results = parse_website(url)
     @cookbook_view.show_results(results)
-    i = @cookbook_view.fetch_recipe_index
-    @cookbook.create(results[i])
+    i = @cookbook_view.fetch_index
+    @cookbook.create(results[i - 1])
   end
 
   private
