@@ -18,8 +18,8 @@ class CookbookController
     end
   end
   def create
-    recipe_name = @cookbook_view.fetch_recipe_name
-    @cookbook.create(recipe_name)
+    recipe_info = @cookbook_view.fetch_recipe_info
+    @cookbook.create(recipe_info)
   end
   def delete
     i = @cookbook_view.fetch_recipe_index

@@ -20,8 +20,11 @@ class Cookbook
     save!
   end
 
-  def create(name)
-    new_recipe = Recipe.new(name)
+  def create(info)
+    new_recipe = Recipe.new
+    info.each do |key, value|
+      new_recipe.send("#{key}=", value)
+    end
     @recipes << new_recipe
     save!
   end
@@ -37,7 +40,7 @@ class Cookbook
       json_parse_recipes["recipes"].each do |recipe|
         recipe_instance = Recipe.new
         recipe.each do |key, value|
-          recipe_instance.send(:key) = value
+          recipe_instance.send("#{key}=", value)
         end
         @recipes << recipe_instance
       end

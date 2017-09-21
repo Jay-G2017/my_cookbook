@@ -1,7 +1,7 @@
 class CookbookView
   def show_recipes(recipes)
     recipes.each_with_index do |recipe, index|
-      puts "#{index + 1}. #{recipe.name}"  
+      puts "#{index + 1}. [#{recipe.rate ? recipe.rate : "未评"}分] #{recipe.name}"  
     end
   end
 
@@ -11,10 +11,15 @@ class CookbookView
     end
   end
 
-  def fetch_recipe_name
-    print ">"
-    puts "Please type the recipe name"
-    name = gets.chomp
+  def fetch_recipe_info
+    recipe_variables = Recipe.new.instance_variables.map { |x| x[1..-1] }
+    recipe_info = {}
+    recipe_variables.each do |v|
+      print ">"
+      puts "Please type the recipe #{v}"
+      recipe_info[v] = gets.chomp
+    end
+    recipe_info
   end
   def fetch_recipe_index
     print ">"
