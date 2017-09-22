@@ -15,8 +15,8 @@ class CookbookController
   end
   def show
     index
-    i = @cookbook_view.fetch_index
-    recipe = @cookbook.find(i - 1)
+    i = @cookbook_view.fetch_index_minus_one
+    recipe = @cookbook.find(i)
     @cookbook_view.show_recipe(recipe)
     @cookbook_view.steps_for_show
     i = @cookbook_view.fetch_index
@@ -28,8 +28,8 @@ class CookbookController
     @cookbook.create(recipe_info)
   end
   def delete
-    i = @cookbook_view.fetch_index
-    @cookbook.delete(i - 1)
+    i = @cookbook_view.fetch_index_minus_one
+    @cookbook.delete(i)
   end
   def import_xiachufang
     search_key = @cookbook_view.fetch_search_key
@@ -37,19 +37,29 @@ class CookbookController
     url=URI.escape(url)
     results = parse_website(url)
     @cookbook_view.show_results(results)
-    i = @cookbook_view.fetch_index
-    @cookbook.create(results[i - 1])
+    puts "选择你想导入的菜单号:"
+    i = @cookbook_view.fetch_index_minus_one
+    @cookbook.create(results[i])
   end
 
   private
   def parse_website(url)
     doc = Nokogiri::HTML(open(url), nil, 'utf-8')
-    search_elements = doc.xpath("//ul[@class='list']/li/a/div[@class='info pure-u']/p[@class='name']")
+    search_elements = doc.xpath('//div[@class="normal-recipe-list"]/ul/li/a')
     results = []
+    base = 'https://www.xiachufang.com'
     search_elements.each do |e|
-      results << e.text.strip
+      hash = {}
+      hash['name'] = e.css('.name').text.strip
+      hash['score'] = e.css('.score, .green-font').text.strip
+      hash['url'] = base + e['href']
+      results << hash
     end
     results
   end
+
+  def parse_website_detail(url)
+    doc = Nokogiri::HTML(open(url), nil, 'utf-8')
+    elements = doc.xpath('')
 end
 

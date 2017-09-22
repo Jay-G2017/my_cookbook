@@ -27,7 +27,8 @@ class CookbookView
 
   def show_results(results)
     results.each_with_index do |result, i|
-      puts "#{i + 1}. #{result}"
+      puts "#{i + 1}. #{result['name']} [#{result['score']}分]"
+      puts result['url']
     end
   end
 
@@ -45,6 +46,11 @@ class CookbookView
     print ">"
     puts "enter the index!"
     i = gets.chomp.to_i
+  end
+  def fetch_index_minus_one
+    print ">"
+    puts "enter the index!"
+    i = gets.chomp.to_i - 1
   end
   def fetch_search_key
     print ">"
