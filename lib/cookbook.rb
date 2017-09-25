@@ -20,8 +20,11 @@ class Cookbook
     save!
   end
 
-  def create(name)
-    new_recipe = Recipe.new(name)
+  def create(info)
+    new_recipe = Recipe.new
+    info.each do |key, value|
+      new_recipe.send("#{key}=", value)
+    end
     @recipes << new_recipe
     save!
   end
@@ -34,18 +37,25 @@ class Cookbook
     if json_parse_recipes["recipes"].nil?
       @recipes
     else
-    json_parse_recipes["recipes"].each do |recipe|
-      @recipes << Recipe.new(recipe["name"])
-    end
+      json_parse_recipes["recipes"].each do |recipe|
+        recipe_instance = Recipe.new
+        recipe.each do |key, value|
+          recipe_instance.send("#{key}=", value)
+        end
+        @recipes << recipe_instance
+      end
     end
   end
 
   def save!
     json_recipes = {}
     array = []
-    @recipes.each do |r|
+    @recipes.each do |recipe|
       hash = {}
-      hash[:name] = r.name
+      recipe.instance_variables.each do |variable|
+        v = variable[1..-1]
+        hash[v] = recipe.send(v)
+      end
       array << hash
     end
     json_recipes["recipes"] = array
