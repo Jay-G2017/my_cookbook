@@ -1,10 +1,11 @@
 class CookbookView
   def show_recipes_index(recipes)
     if recipes.empty?
-      puts "there is nothing here!"
+      puts "现在还没有任何菜谱哦!"
+      puts "创建一条或从爱厨房找找你喜欢的菜谱吧!"
     else
       recipes.each_with_index do |recipe, index|
-        puts "#{index + 1}. [#{recipe.score.empty? ? "未评": recipe.score}分] #{recipe.name}"
+        puts "#{index + 1}. #{recipe.name} [#{recipe.score.class == Float ? recipe.score : '未评'}分]"
       end
     end
   end
@@ -23,22 +24,28 @@ class CookbookView
       puts " #{i + 1}: #{step}"
     end
     puts ""
-    puts "小贴士:"
-    recipe.tips.each do |tip|
-      puts tip
+    if recipe.tips
+      puts "小贴士:"
+      recipe.tips.each do |tip|
+        puts tip
+      end
+      puts ""
     end
-    puts ""
+    if recipe.url
+      puts "查看菜谱的原网址"
+      puts "#{recipe.url}"
+      puts ""
+    end
   end
 
   def steps_for_show
-    puts "press [1] to see other recipe"
-    puts "press [other keys] to go back"
+    puts "按 [1] 看其它的菜谱"
+    puts "按任何其它键返回"
   end
 
   def show_search_results_from_xiachufang(results)
     results.each_with_index do |result, i|
       puts "#{i + 1}. #{result['name']} [#{result['score']}分]"
-      puts result['url']
     end
   end
 
@@ -90,25 +97,27 @@ class CookbookView
         recipe_info['tips'] = tips_array
       else
         print ">"
-        puts "Please type the recipe #{v}"
-        recipe_info[v] = gets.chomp
+        puts "输入菜谱的#{v}"
+        value = gets.chomp
+        value = value.to_i.round(1) if value.to_i != 0 
+        recipe_info[v] = value
       end
     end
     recipe_info
   end
   def fetch_index
     print ">"
-    puts "enter the index!"
+    puts "请选择序号!"
     i = gets.chomp.to_i
   end
   def fetch_index_minus_one
     print ">"
-    puts "enter the index!"
+    puts "请选择序号!"
     i = gets.chomp.to_i - 1
   end
   def fetch_search_key
     print ">"
-    puts "what recipe do you want to search?"
+    puts "输入任何你想搜索的菜谱（比如'红烧肉'，'鱼香肉丝'等)"
     key = gets.chomp
   end
 end

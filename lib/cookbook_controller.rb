@@ -9,6 +9,9 @@ class CookbookController
     @cookbook_view = CookbookView.new
     @cookbook = Cookbook.new(file_path)
   end
+  def empty?
+    @cookbook.all.empty? ? true : false
+  end
   def index
     recipes = @cookbook.all
     @cookbook_view.show_recipes_index(recipes)
@@ -43,7 +46,7 @@ class CookbookController
     # binding.pry
     recipe['name'] = results[i]['name']
     recipe['score'] = results[i]['score']
-    recipe['url'] = results[i][url]
+    recipe['url'] = results[i]['url']
     @cookbook.create(recipe)
   end
 
@@ -53,11 +56,11 @@ class CookbookController
     search_elements = doc.xpath('//div[@class="normal-recipe-list"]/ul/li/a')
     results = []
     base = 'https://www.xiachufang.com'
-    # binding.pry
+    binding.pry
     search_elements.each do |e|
       hash = {}
       hash['name'] = e.css('.name').text.strip
-      hash['score'] = e.css('.score, .green-font').text.strip
+      hash['score'] = e.css('.score, .green-font').text.strip.to_f.round(1)
       hash['url'] = base + e['href']
       results << hash
     end
@@ -81,12 +84,12 @@ class CookbookController
     steps_hash = {}
     steps.each do |step|
       key = step.text.strip
-      value = step.at_css('img')['src']
+      step.at_css('img').nil? ? value = nil : value = step.at_css('img')['src']
       steps_hash[key] = value
     end
     results['steps'] = steps_hash
 
-    unless doc.css('div.tip').nil?
+    unless doc.css('div.tip').empty?
       tips = []
       doc.css('div.tip').first.children.each do |child|
         tips << child.text.strip
