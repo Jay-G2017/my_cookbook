@@ -1,11 +1,11 @@
 class Recipe
-  attr_accessor :name, :ingredients, :process, :tips, :rate
-  def initialize(name = nil, ingredients = nil, process = nil, tips = nil, rate = nil)
+  attr_accessor :name, :ings, :steps, :tips, :score, :url
+  def initialize(name = nil, ings = nil, steps = nil, tips = nil, score = nil)
     @name = name
-    @ingredients = ingredients
-    @process = process
+    @ings = ings
+    @steps = steps
     @tips = tips
-    @rate = rate
+    @score = score
   end
 end
 
