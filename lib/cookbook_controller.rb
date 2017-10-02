@@ -56,7 +56,6 @@ class CookbookController
     search_elements = doc.xpath('//div[@class="normal-recipe-list"]/ul/li/a')
     results = []
     base = 'https://www.xiachufang.com'
-    binding.pry
     search_elements.each do |e|
       hash = {}
       hash['name'] = e.css('.name').text.strip
